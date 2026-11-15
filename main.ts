@@ -216,6 +216,11 @@ function upstreamCall(candidate: Candidate, clientWire: 'openai' | 'anthropic', 
   return { url, headers, body: req };
 }
 
+/** Sleep `ms` milliseconds: only used to honor a provider's Retry-After before retrying it. */
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 /** The provider's error message, from its error envelope in any wire, or the raw text. */
 function errorMessage(text: string): string {
   try {
@@ -336,7 +341,13 @@ async function serve(clientWire: 'openai' | 'anthropic', body: Json, res: Server
         log(`${candidate.probe.provider.id} is exhausted: ${message}`);
         break;
       }
-      if (/refused this call/.test(message) && attempt === 1) continue; // One scheduled refusal: try it once more.
+      if (/refused this call/.test(message) && attempt === 1) {
+        // One scheduled refusal: try it once more, honoring a Retry-After when the provider sent
+        // one (at most a second: the client's per-request timeout is 30 s and failover follows).
+        const retryAfter = Number(upstream.headers.get('retry-after'));
+        if (Number.isFinite(retryAfter) && retryAfter > 0) await sleep(Math.min(retryAfter, 1) * 1000);
+        continue;
+      }
       break;
     }
   }
