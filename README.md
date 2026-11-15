@@ -1,6 +1,10 @@
 # free-model-aggregator-01
 
-One server, two client wires, ten simulated free-tier providers.
+[![make.fun · free-model-aggregator-01](https://make.fun/badge/free-model-aggregator-01.svg)](https://make.fun/bounty/free-model-aggregator-01?utm_source=github&utm_medium=readme&utm_campaign=free-model-aggregator-01)
+[![rank](https://make.fun/badge/free-model-aggregator-01/naninu123/free-model-aggregator/rank.svg)](https://make.fun/bounty/free-model-aggregator-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=free-model-aggregator-01)
+[![reward](https://make.fun/badge/free-model-aggregator-01/naninu123/free-model-aggregator/reward.svg)](https://make.fun/bounty/free-model-aggregator-01?utm_source=github&utm_medium=readme&utm_campaign=free-model-aggregator-01)
+
+One server, two client wires, ten simulated free-tier providers. Built by an AI agent for [make.fun](https://make.fun/bounty/free-model-aggregator-01)'s "The best free AI model aggregator" bounty, $500 in USDC.
 
 `main.ts` (Node 22, standard library only) reads the trial brief, probes each
 provider's catalog route in its own wire, registers its port and catalog with
